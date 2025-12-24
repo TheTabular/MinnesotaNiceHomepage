@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0d0015;
+  --foreground: #f5f0ff;
+  --purple-deep: #2d1b4e;
+  --purple-royal: #6b3fa0;
+  --purple-bright: #9b59b6;
+  --purple-light: #d4a5ff;
+  --gold: #ffd700;
+  --rain-blue: #7b68ee;
 }
 
 @theme inline {
@@ -12,15 +18,126 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Purple Rain Animation */
+@keyframes rain {
+  0% {
+    transform: translateY(-5vh) translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) translateX(20px);
+    opacity: 0.3;
+  }
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 20px #9b59b6, 0 0 40px #6b3fa0, 0 0 60px #2d1b4e;
+  }
+  50% {
+    text-shadow: 0 0 40px #d4a5ff, 0 0 80px #9b59b6, 0 0 120px #6b3fa0;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+}
+
+.rain-drop {
+  position: fixed;
+  width: 2px;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, #9b59b6, #7b68ee);
+  animation: rain linear infinite;
+  pointer-events: none;
+  border-radius: 0 0 2px 2px;
+}
+
+.glow-text {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-hover:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(155, 89, 182, 0.4), 0 0 40px rgba(155, 89, 182, 0.2);
+}
+
+/* Custom scrollbar - purple (default) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0015;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #6b3fa0, #9b59b6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #9b59b6, #d4a5ff);
+}
+
+/* Gray scrollbar for light pages (disclaimer) - using [data-scrollbar] for higher specificity */
+html[data-scrollbar="gray"] {
+  scrollbar-color: #d1d5db #ffffff;
+}
+
+html[data-scrollbar="gray"]::-webkit-scrollbar-track {
+  background: #ffffff !important;
+}
+
+html[data-scrollbar="gray"]::-webkit-scrollbar-thumb {
+  background: #d1d5db !important;
+  border-radius: 4px;
+}
+
+html[data-scrollbar="gray"]::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af !important;
 }
