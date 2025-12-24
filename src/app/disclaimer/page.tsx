@@ -22,7 +22,7 @@ export default function DisclaimerPage() {
     <section className="min-h-screen bg-[#fdfcfa]">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[#0d0015] border-b border-purple-500/20">
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center h-16">
             <Link href="/" className="flex items-center gap-3">
               <Image
@@ -40,7 +40,7 @@ export default function DisclaimerPage() {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-6 py-6">
+      <div className="max-w-6xl mx-auto px-4 py-6">
         {/* Back Link */}
         <button
           onClick={() => window.history.back()}
@@ -208,7 +208,7 @@ export default function DisclaimerPage() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-200 py-4 px-6">
+      <div className="border-t border-gray-200 py-4 px-4">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-xs text-gray-400">
           <span>© {new Date().getFullYear()} MinnesotaNice<span className="mx-1.5 sm:mx-2">·</span>Educational purposes</span>
           <span className="hidden sm:inline">·</span>
