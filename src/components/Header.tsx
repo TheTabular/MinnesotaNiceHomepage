@@ -362,7 +362,7 @@ export default function Header() {
             <div className="flex items-center gap-1.5">
               <span className="text-accent-100">DHS Contact:</span>
               <a className="text-white font-medium hover:underline" href="tel:651-431-2000">651-431-2000</a>
-              <span className="text-accent-100 mx-0.5">|</span>
+              <span className="text-white/50">|</span>
               <a className="text-white font-medium hover:underline" href="tel:800-657-3739">800-657-3739</a>
             </div>
             <div className="flex items-center gap-3">
