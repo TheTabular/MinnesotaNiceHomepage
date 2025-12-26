@@ -1,338 +1,318 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
-interface RainDrop {
-  id: number;
-  left: number;
-  top: number;
-  delay: number;
-  duration: number;
-  height: number;
-}
-
-interface ServiceCard {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  href: string;
-}
-
-const PurpleRain = () => {
-  const [drops, setDrops] = useState<RainDrop[]>([]);
-
-  useEffect(() => {
-    const rainDrops: RainDrop[] = Array.from({ length: 50 }, (_, i) => {
-      const duration = 1 + Math.random() * 2;
-      return {
-        id: i,
-        left: Math.random() * 100,
-        top: -10, // Start above viewport
-        delay: -Math.random() * duration, // Negative delay = already mid-animation
-        duration,
-        height: 15 + Math.random() * 25,
-      };
-    });
-    setDrops(rainDrops);
-  }, []);
-
-  return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      {drops.map((drop) => (
-        <div
-          key={drop.id}
-          className="rain-drop"
-          style={{
-            left: `${drop.left}%`,
-            top: `${drop.top}%`,
-            animationDelay: `${drop.delay}s`,
-            animationDuration: `${drop.duration}s`,
-            height: `${drop.height}px`,
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
-const HealthIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-24 h-24">
-    <rect x="0.5" y="0.5" width="23" height="23" rx="4" fill="#3a8f88" stroke="black" strokeWidth="1"/>
-    <path d="M12 6v12M6 12h12" stroke="white" strokeWidth="3.5" strokeLinecap="round"/>
-  </svg>
-);
-
-const services: ServiceCard[] = [
+const resources = [
   {
     title: "Healthcare",
-    description: "MNsure, Medicaid & private plan information",
-    icon: <HealthIcon />,
+    description: "MNsure, Medical Assistance, MinnesotaCare enrollment and eligibility guides.",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+      </svg>
+    ),
     href: "https://healthcare.minnesotanice.xyz",
+    external: true,
+    color: "bg-emerald-50 text-emerald-600 group-hover:bg-emerald-100",
+  },
+  {
+    title: "Housing Assistance",
+    description: "Rental assistance, Section 8 vouchers, emergency housing, and homeownership programs.",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+      </svg>
+    ),
+    href: "#",
+    external: false,
+    color: "bg-blue-50 text-blue-600 group-hover:bg-blue-100",
+    comingSoon: true,
+  },
+  {
+    title: "Food & Nutrition",
+    description: "SNAP benefits, WIC, food shelves, and community meal programs across Minnesota.",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.87c1.355 0 2.697.055 4.024.165C17.155 8.51 18 9.473 18 10.608v2.513m-3-4.87v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m15-3.38a48.474 48.474 0 00-6-.37c-2.032 0-4.034.125-6 .37m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.17c0 .62-.504 1.124-1.125 1.124H4.125A1.125 1.125 0 013 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 016 13.12M12.265 3.11a.375.375 0 11-.53 0L12 2.845l.265.265zm-3 0a.375.375 0 11-.53 0L9 2.845l.265.265zm6 0a.375.375 0 11-.53 0L15 2.845l.265.265z" />
+      </svg>
+    ),
+    href: "#",
+    external: false,
+    color: "bg-amber-50 text-amber-600 group-hover:bg-amber-100",
+    comingSoon: true,
+  },
+  {
+    title: "Childcare & Family",
+    description: "Childcare assistance, parenting resources, and family support services.",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
+      </svg>
+    ),
+    href: "#",
+    external: false,
+    color: "bg-pink-50 text-pink-600 group-hover:bg-pink-100",
+    comingSoon: true,
+  },
+  {
+    title: "Employment",
+    description: "Job search assistance, unemployment benefits, and workforce training programs.",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
+      </svg>
+    ),
+    href: "#",
+    external: false,
+    color: "bg-indigo-50 text-indigo-600 group-hover:bg-indigo-100",
+    comingSoon: true,
+  },
+  {
+    title: "Senior Services",
+    description: "Medicare guidance, senior living options, and caregiver support resources.",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+      </svg>
+    ),
+    href: "#",
+    external: false,
+    color: "bg-purple-50 text-purple-600 group-hover:bg-purple-100",
+    comingSoon: true,
+  },
+  {
+    title: "Disability Services",
+    description: "SSI/SSDI information, accessibility resources, and disability support programs.",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+      </svg>
+    ),
+    href: "#",
+    external: false,
+    color: "bg-teal-50 text-teal-600 group-hover:bg-teal-100",
+    comingSoon: true,
+  },
+  {
+    title: "Legal Aid",
+    description: "Free legal services, tenant rights, and civil legal assistance for Minnesotans.",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z" />
+      </svg>
+    ),
+    href: "#",
+    external: false,
+    color: "bg-slate-50 text-slate-600 group-hover:bg-slate-100",
+    comingSoon: true,
   },
 ];
 
 export default function Home() {
-  const [mounted, setMounted] = useState(false);
-  const [showHeader, setShowHeader] = useState(false);
-  const [hideScrollIndicator, setHideScrollIndicator] = useState(true);
-  const [showResources, setShowResources] = useState(false);
-  const [resourcesOpacity, setResourcesOpacity] = useState(0);
-
-  useEffect(() => {
-    setMounted(true);
-
-    // Check if user has scrolled before
-    const hasScrolled = localStorage.getItem('homepage-has-scrolled');
-    if (!hasScrolled) {
-      setHideScrollIndicator(false);
-    }
-
-    // Restore scroll position if coming back from disclaimer
-    const savedScroll = sessionStorage.getItem('homepage-scroll');
-    if (savedScroll) {
-      const mainElement = document.querySelector('main');
-      if (mainElement) {
-        // Small delay to ensure layout is ready
-        setTimeout(() => {
-          mainElement.scrollTop = parseInt(savedScroll, 10);
-        }, 0);
-      }
-      sessionStorage.removeItem('homepage-scroll');
-    }
-  }, []);
-
-  useEffect(() => {
-    let hasScrolledOnce = false;
-
-    const handleScroll = () => {
-      // Hide scroll indicator instantly on first scroll and remember it
-      if (!hasScrolledOnce) {
-        hasScrolledOnce = true;
-        setHideScrollIndicator(true);
-        localStorage.setItem('homepage-has-scrolled', 'true');
-      }
-
-      // Show header instantly on any scroll
-      const mainElement = document.querySelector('main');
-      if (mainElement && mainElement.scrollTop > 10) {
-        setShowHeader(true);
-        setShowResources(true);
-
-        // Calculate opacity based on title position - gradual fade peaking at center, stays solid above
-        const titleElement = document.getElementById('resources-title');
-        if (titleElement) {
-          const rect = titleElement.getBoundingClientRect();
-          const titleCenter = rect.top + rect.height / 2;
-          const viewportCenter = window.innerHeight / 2;
-
-          // If title is at or above center, stay solid
-          if (titleCenter <= viewportCenter) {
-            setResourcesOpacity(1);
-          } else {
-            // Below center - gradual fade based on distance
-            const distanceFromCenter = titleCenter - viewportCenter;
-            const maxDistance = window.innerHeight * 0.5;
-            const proximity = 1 - Math.min(distanceFromCenter / maxDistance, 1);
-            // Power of 4 for more gradual fade, peaking at center
-            const smoothOpacity = Math.pow(proximity, 4);
-            setResourcesOpacity(smoothOpacity);
-          }
-        }
-      } else {
-        setShowHeader(false);
-        setShowResources(false);
-        setResourcesOpacity(0);
-      }
-    };
-
-    const mainElement = document.querySelector('main');
-    if (mainElement) {
-      mainElement.addEventListener('scroll', handleScroll);
-      return () => mainElement.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
-
   return (
-    <main className="min-h-screen relative overflow-hidden bg-gradient-to-b from-[#0d0015] via-[#1a0a2e] to-[#0d0015] overflow-y-auto h-screen">
-      {!showHeader && <PurpleRain />}
-
-      {/* Sticky Header - appears when scrolled to services */}
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 bg-[#0d0015] border-b border-purple-500/20 transition-all duration-300 ${
-          showHeader ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'
-        }`}
-      >
-        <div className="max-w-[90rem] mx-auto">
-          <div className="flex items-center h-16 px-4">
-            <Link href="/" className="flex items-center gap-3">
-              <Image
-                src="/minnesota-outline.png"
-                alt="Minnesota"
-                width={36}
-                height={36}
-                className="h-9 w-9 mb-[5px]"
-              />
-              <span className="font-semibold text-lg">
-                <span className="text-purple-100">Minnesota</span><span className="text-purple-300">Nice</span>
-              </span>
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      {/* Ambient purple glow effects */}
-      <div className="fixed top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-[128px] pointer-events-none" />
-      <div className="fixed bottom-1/4 right-1/4 w-96 h-96 bg-fuchsia-600/15 rounded-full blur-[128px] pointer-events-none" />
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-900/10 rounded-full blur-[150px] pointer-events-none" />
-
+    <>
       {/* Hero Section */}
-      <section className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 text-center">
-        {/* Minnesota outline */}
-        <div className={`mb-6 transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
-          <div className="relative float-animation">
+      <section className="relative overflow-hidden bg-gradient-to-b from-accent-50 to-cream-50 border-b border-accent-100">
+        {/* Background Decoration */}
+        <div className="absolute inset-0 decoration-dots opacity-30" />
+        <div className="absolute top-0 right-0 w-full h-full overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 0.08, x: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="absolute -right-[20px] top-1/2 -translate-y-1/2 w-[500px] h-[500px]"
+          >
             <Image
               src="/minnesota-outline.png"
-              alt="Minnesota"
-              width={120}
-              height={140}
-              className="opacity-90"
+              alt=""
+              fill
+              className="object-contain"
+              priority
             />
-            <div className="absolute inset-0 bg-purple-400/20 blur-2xl" />
-          </div>
+          </motion.div>
         </div>
 
-        {/* Main Title */}
-        <h1
-          className={`text-5xl md:text-7xl font-bold mb-4 transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-        >
-          <span className="text-purple-100">Minnesota</span><span className="text-purple-300">Nice</span>
-        </h1>
+        <div className="container-wide relative z-10 py-8 md:py-12 lg:py-16">
+          <div className="max-w-3xl">
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-accent-200 text-accent-700 text-xs font-medium shadow-sm mb-6">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                </span>
+                Healthcare site is now live
+              </span>
+            </motion.div>
 
-        {/* Tagline */}
-        <p className={`text-lg text-purple-300/60 max-w-md mb-16 flex items-center gap-3 transition-all duration-1000 delay-400 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <Image src="/dove-outline.png" alt="" width={20} height={24} className="opacity-80" />
-          <span className="italic">&quot;Dearly beloved, we are gathered here today...&quot;</span>
-          <Image src="/dove-outline.png" alt="" width={20} height={24} className="opacity-80 scale-x-[-1]" />
-        </p>
+            {/* Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-slate-900 leading-tight mb-4 md:mb-5 lg:mb-6"
+            >
+              Minnesota<br />Made Simple
+            </motion.h1>
 
-        {/* Scroll/Swipe indicator */}
-        <div
-          className={`absolute bottom-12 transition-opacity duration-150 pointer-events-none ${mounted && !hideScrollIndicator ? 'opacity-100' : 'opacity-0'}`}
-        >
-          <div className="flex flex-col items-center gap-2 text-purple-300/50">
-            {/* Desktop: Scroll */}
-            <span className="hidden md:block text-xs tracking-widest uppercase">Scroll</span>
-            <div className="hidden md:flex w-6 h-10 border-2 border-purple-300/30 rounded-full justify-center pt-2">
-              <div className="w-1.5 h-3 bg-purple-400/60 rounded-full animate-bounce" />
-            </div>
-            {/* Mobile: Swipe Up */}
-            <span className="md:hidden text-xs tracking-widest uppercase">Swipe Up</span>
-            <svg className="md:hidden w-6 h-6 animate-bounce stroke-purple-300/50" fill="none" viewBox="0 0 24 24" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
-            </svg>
+            {/* Subheadline */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-lg md:text-xl text-slate-600 leading-relaxed mb-8 max-w-2xl"
+            >
+              Your guide to Minnesota&apos;s public programs and services.
+              We simplify complex government resources so you can get the help you need.
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex flex-wrap gap-4"
+            >
+              <button
+                onClick={() => document.getElementById('resources')?.scrollIntoView({ behavior: 'smooth' })}
+                className="btn btn-primary"
+              >
+                Explore
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <a
+                href="https://mn.gov/dhs/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-secondary"
+              >
+                Visit MN DHS
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </motion.div>
+
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="relative z-10 min-h-screen flex flex-col">
-        <div className="pt-8 pb-24 flex-grow px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2
-              id="resources-title"
-              className={`text-6xl md:text-8xl lg:text-9xl font-bold text-center mb-24 tracking-tight transition-transform duration-[1500ms] ease-out ${showResources ? 'translate-y-0' : 'translate-y-16'}`}
-              style={{
-                color: `rgba(255, 255, 255, ${0.03 + resourcesOpacity * 0.97})`,
-                transition: 'color 0.15s ease-out, transform 1.5s ease-out'
-              }}
-            >
-              Explore Resources
+      {/* Resources Section */}
+      <section id="resources" className="py-12 bg-cream-50 scroll-mt-16">
+        <div className="container-wide">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-slate-900 mb-4">
+              Sites for Minnesotans
             </h2>
-            <div className="flex flex-wrap gap-6 justify-center">
-              {services.map((service, index) => (
-                <a
-                  key={index}
-                  href={service.href}
-                  className="group flex flex-col items-center justify-center w-[240px] h-[240px] rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all"
-                >
-                  {service.icon}
-                  <span className="mt-5 text-2xl font-semibold text-white">
-                    {service.title}
-                  </span>
-                  {service.description && (
-                    <span className="mt-1 text-sm text-white/50 text-center">
-                      {service.description}
-                    </span>
-                  )}
-                </a>
-              ))}
-            </div>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              Find information about public programs, benefits, and services
+              available to Minnesota residents.
+            </p>
+          </motion.div>
+
+          {/* Resource Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {resources.map((resource, index) => (
+              <motion.div
+                key={resource.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+              >
+                {resource.comingSoon ? (
+                  <div className="group h-full bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm flex flex-col opacity-60 relative">
+                    <span className="absolute top-6 right-6 md:top-8 md:right-8 text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded">Coming Soon</span>
+                    <div className={`w-14 h-14 md:w-16 md:h-16 rounded-xl ${resource.color} flex items-center justify-center mb-5 transition-all duration-300`}>
+                      {resource.icon}
+                    </div>
+                    <h3 className="font-display text-xl md:text-2xl font-semibold text-slate-800 mb-3">
+                      {resource.title}
+                    </h3>
+                    <p className="text-slate-600 text-sm md:text-base leading-relaxed flex-grow">
+                      {resource.description}
+                    </p>
+                  </div>
+                ) : (
+                  <a
+                    href={resource.href}
+                    target={resource.external ? "_blank" : undefined}
+                    rel={resource.external ? "noopener noreferrer" : undefined}
+                    className="group h-full bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm hover:shadow-lg hover:border-accent-300 transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                  >
+                    <div className={`w-14 h-14 md:w-16 md:h-16 rounded-xl ${resource.color} flex items-center justify-center mb-5 group-hover:scale-105 transition-all duration-300`}>
+                      {resource.icon}
+                    </div>
+                    <h3 className="font-display text-xl md:text-2xl font-semibold text-slate-800 mb-3 group-hover:text-accent-700 transition-colors flex items-center gap-2">
+                      {resource.title}
+                      {resource.external && (
+                        <svg className="w-4 h-4 text-gray-400 group-hover:text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      )}
+                    </h3>
+                    <p className="text-slate-600 text-sm md:text-base leading-relaxed flex-grow">
+                      {resource.description}
+                    </p>
+                  </a>
+                )}
+              </motion.div>
+            ))}
           </div>
         </div>
+      </section>
 
-        {/* CTA Section */}
-        <section className="py-16 md:py-20 bg-purple-950 relative overflow-hidden">
-          <div className="max-w-2xl mx-auto px-4 relative z-10 text-center">
-            <h2 className="text-3xl md:text-4xl font-semibold text-white mb-4">
-              More Resources in the Future
+      {/* About Section */}
+      <section className="py-16 md:py-20 bg-accent-600 relative overflow-hidden">
+        <div className="container-narrow relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">
+              It&apos;s in our DNA
             </h2>
-            <p className="text-lg text-purple-100 mb-8 max-w-xl mx-auto">
-              We&apos;re working on more ways to help Minnesotans.
+            <p className="text-lg text-accent-100 mb-8 max-w-xl mx-auto">
+              We&apos;re building free, easy-to-understand sites to help Minnesotans
+              access the programs and services they need.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <span
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 text-purple-200/60 border border-white/20 rounded-lg font-medium"
+              <a
+                href="https://mn.gov/dhs/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn bg-white text-accent-700 hover:bg-accent-50 border-2 border-white"
               >
-                Coming Soon...
-              </span>
+                Official MN DHS Site
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+              <Link
+                href="/contact"
+                className="btn bg-transparent text-white border-2 border-white/50 hover:border-white hover:bg-white/10"
+              >
+                Get Involved
+              </Link>
             </div>
-          </div>
-        </section>
-
-        {/* Footer */}
-        <footer className="border-t border-purple-500/20 bg-[#0a0012]">
-          <div className="max-w-[90rem] mx-auto px-6">
-            <div className="py-8 md:py-12">
-              <div className="max-w-3xl">
-              {/* Resources */}
-              <div>
-                <h3 className="font-semibold text-purple-100 text-sm mb-3">Resources</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <a
-                      href="https://healthcare.minnesotanice.xyz"
-                      className="text-purple-300/60 hover:text-purple-200 text-sm transition-colors"
-                    >
-                      Healthcare
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              </div>
-            </div>
-
-            {/* Bottom Bar */}
-            <div className="border-t border-purple-500/20 py-4">
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-xs text-purple-400/40">
-                <span>© {new Date().getFullYear()} MinnesotaNice<span className="mx-1.5 sm:mx-2">·</span>Educational purposes</span>
-                <span className="hidden sm:inline">·</span>
-                <span className="inline-flex items-center whitespace-nowrap">
-                  <Link href="/disclaimer" scroll={true} onClick={() => {
-                    const mainElement = document.querySelector('main');
-                    if (mainElement) {
-                      sessionStorage.setItem('homepage-scroll', mainElement.scrollTop.toString());
-                    }
-                  }} className="hover:text-purple-300 transition-colors">Disclaimer</Link>
-                  <span className="mx-1.5 sm:mx-2">·</span>
-                  <span>No government affiliation</span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </footer>
+          </motion.div>
+        </div>
       </section>
-    </main>
+    </>
   );
 }
