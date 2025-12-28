@@ -47,7 +47,20 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  
+  // Fix scroll position when mobile menu closes to prevent white space
+  useEffect(() => {
+    if (!isMobileMenuOpen) {
+      // Small delay to let the animation complete
+      const timer = setTimeout(() => {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        if (window.scrollY > maxScroll) {
+          window.scrollTo({ top: maxScroll, behavior: "instant" });
+        }
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [isMobileMenuOpen]);
+
   return (
     <>
       {/* Main Header */}

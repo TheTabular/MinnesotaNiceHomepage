@@ -235,9 +235,9 @@ export default function Home() {
                 transition={{ duration: 0.4, delay: index * 0.05 }}
               >
                 {resource.comingSoon ? (
-                  <div className="group h-full bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm flex flex-col opacity-60 relative">
+                  <div className="h-full bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm flex flex-col opacity-60 relative">
                     <span className="absolute top-6 right-6 md:top-8 md:right-8 text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded">Coming Soon</span>
-                    <div className={`w-14 h-14 md:w-16 md:h-16 rounded-xl ${resource.color} flex items-center justify-center mb-5 transition-all duration-300`}>
+                    <div className={`w-14 h-14 md:w-16 md:h-16 rounded-xl ${resource.color} flex items-center justify-center mb-5`}>
                       {resource.icon}
                     </div>
                     <h3 className="font-display text-xl md:text-2xl font-semibold text-slate-800 mb-3">
@@ -252,15 +252,18 @@ export default function Home() {
                     href={resource.href}
                     target={resource.external ? "_blank" : undefined}
                     rel={resource.external ? "noopener noreferrer" : undefined}
-                    className="group h-full bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm hover:shadow-lg hover:border-accent-300 transition-all duration-300 hover:-translate-y-1 flex flex-col"
+                    className="group relative h-full bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm flex flex-col transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg overflow-hidden"
                   >
-                    <div className={`w-14 h-14 md:w-16 md:h-16 rounded-xl ${resource.color} flex items-center justify-center mb-5 group-hover:scale-105 transition-all duration-300`}>
+                    {/* Accent bar that appears on hover */}
+                    <div className="absolute left-0 right-0 top-0 h-1.5 bg-emerald-500 transform -translate-y-full group-hover:translate-y-0 transition-transform duration-200" />
+
+                    <div className={`w-14 h-14 md:w-16 md:h-16 rounded-xl ${resource.color} flex items-center justify-center mb-5 transition-colors duration-200`}>
                       {resource.icon}
                     </div>
-                    <h3 className="font-display text-xl md:text-2xl font-semibold text-slate-800 mb-3 group-hover:text-accent-700 transition-colors flex items-center gap-2">
+                    <h3 className="font-display text-xl md:text-2xl font-semibold text-slate-900 mb-3 inline-flex items-center gap-2">
                       {resource.title}
                       {resource.external && (
-                        <svg className="w-4 h-4 text-gray-400 group-hover:text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-gray-300 group-hover:text-emerald-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                       )}
